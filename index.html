@@ -41,7 +41,6 @@
       margin-bottom: 15px;
       font-size: 1.1em;
     }
-    .form-row { margin-bottom: 15px; }
     .form-row-inline { 
       display: flex; 
       gap: 15px; 
@@ -178,16 +177,16 @@
       </div>
 
       <div id="datosPasaporte">
-      <div class="form-row-inline">
-        <div class="form-group">
-          <label>Número de pasaporte <span class="required">*</span></label>
-          <input type="text" name="numero_pasaporte" required placeholder="Ej: A12345678">
+        <div class="form-row-inline">
+          <div class="form-group">
+            <label>Número de pasaporte <span class="required">*</span></label>
+            <input type="text" name="numero_pasaporte" required placeholder="Ej: A12345678">
+          </div>
+          <div class="form-group">
+            <label>Vencimiento pasaporte <span class="required">*</span></label>
+            <input type="date" name="vencimiento_pasaporte" required>
+          </div>
         </div>
-        <div class="form-group">
-          <label>Vencimiento pasaporte <span class="required">*</span></label>
-          <input type="date" name="vencimiento_pasaporte" required>
-        </div>
-      </div>
       </div>
     </div>
 
@@ -247,7 +246,6 @@
         </select>
       </div>
 
-      <!-- Pasajeros adicionales (se muestran dinámicamente) -->
       <div id="pasajerosAdicionales"></div>
     </div>
 
@@ -298,26 +296,24 @@
         </div>
       </div>
 
-      <!-- Campo dinámico para WhatsApp -->
       <div class="canal-field hidden" id="campoWhatsApp">
         <div class="form-group" style="margin-bottom: 0;">
           <label>Número de WhatsApp <span class="required">*</span></label>
           <input type="tel" name="whatsapp_numero" placeholder="Ej: +58 412 1234567">
-          <p class="helper-text">Incluye el código de país. Ejemplo: +58 para Venezuela, +34 para España</p>
+          <p class="helper-text">Incluye el código de país</p>
         </div>
       </div>
 
-      <!-- Campo dinámico para Telegram -->
       <div class="canal-field hidden" id="campoTelegram">
         <div class="form-group" style="margin-bottom: 0;">
           <label>Usuario de Telegram <span class="required">*</span></label>
           <input type="text" name="telegram_username" placeholder="Ej: juanperez (sin @)">
-          <p class="helper-text">Tu nombre de usuario de Telegram, sin incluir la @</p>
+          <p class="helper-text">Tu nombre de usuario de Telegram, sin la @</p>
         </div>
       </div>
     </div>
 
-    <!-- DATOS CORPORATIVOS (solo si es corporativo) -->
+    <!-- DATOS CORPORATIVOS -->
     <div class="section hidden" id="seccionCorporativo">
       <div class="section-title">Datos Corporativos</div>
       
@@ -328,7 +324,7 @@
 
       <div class="form-group">
         <label>RIF/NIF de la empresa <span class="required">*</span></label>
-        <input type="text" name="rif_empresa" placeholder="Ej: J-12345678 o B12345678">
+        <input type="text" name="rif_empresa" placeholder="Ej: J-12345678">
       </div>
 
       <div class="form-group">
@@ -348,29 +344,26 @@
 </div>
 
 <script>
-  // URL del webhook de n8n
-  const WEBHOOK_URL = 'https://unstoic-undeservedly-adena.ngrok-free.app/webhook/ava-formulario';
-
   // Mostrar/ocultar campos pasaporte
-  document.querySelectorAll('input[name="tiene_pasaporte"]').forEach(radio => {
+  document.querySelectorAll('input[name="tiene_pasaporte"]').forEach(function(radio) {
     radio.addEventListener('change', function() {
-      const datosPasaporte = document.getElementById('datosPasaporte');
-      const inputs = datosPasaporte.querySelectorAll('input');
+      var datosPasaporte = document.getElementById('datosPasaporte');
+      var inputs = datosPasaporte.querySelectorAll('input');
       if (this.value === 'NO') {
         datosPasaporte.style.display = 'none';
-        inputs.forEach(i => i.removeAttribute('required'));
+        inputs.forEach(function(i) { i.removeAttribute('required'); });
       } else {
         datosPasaporte.style.display = 'block';
-        inputs.forEach(i => i.setAttribute('required', 'required'));
+        inputs.forEach(function(i) { i.setAttribute('required', 'required'); });
       }
     });
   });
 
   // Mostrar/ocultar sección corporativo
-  document.querySelectorAll('input[name="tipo_viaje"]').forEach(radio => {
+  document.querySelectorAll('input[name="tipo_viaje"]').forEach(function(radio) {
     radio.addEventListener('change', function() {
-      const secCorp = document.getElementById('seccionCorporativo');
-      const secPresup = document.getElementById('seccionPresupuesto');
+      var secCorp = document.getElementById('seccionCorporativo');
+      var secPresup = document.getElementById('seccionPresupuesto');
       if (this.value === 'CORPORATIVO') {
         secCorp.classList.remove('hidden');
         secPresup.classList.add('hidden');
@@ -382,20 +375,18 @@
   });
 
   // Mostrar/ocultar campos según canal de respuesta
-  document.querySelectorAll('input[name="canal_respuesta"]').forEach(radio => {
+  document.querySelectorAll('input[name="canal_respuesta"]').forEach(function(radio) {
     radio.addEventListener('change', function() {
-      const campoWhatsApp = document.getElementById('campoWhatsApp');
-      const campoTelegram = document.getElementById('campoTelegram');
-      const inputWhatsApp = document.querySelector('input[name="whatsapp_numero"]');
-      const inputTelegram = document.querySelector('input[name="telegram_username"]');
+      var campoWhatsApp = document.getElementById('campoWhatsApp');
+      var campoTelegram = document.getElementById('campoTelegram');
+      var inputWhatsApp = document.querySelector('input[name="whatsapp_numero"]');
+      var inputTelegram = document.querySelector('input[name="telegram_username"]');
       
-      // Ocultar todos
       campoWhatsApp.classList.add('hidden');
       campoTelegram.classList.add('hidden');
       inputWhatsApp.removeAttribute('required');
       inputTelegram.removeAttribute('required');
       
-      // Mostrar el seleccionado
       if (this.value === 'WHATSAPP') {
         campoWhatsApp.classList.remove('hidden');
         inputWhatsApp.setAttribute('required', 'required');
@@ -408,45 +399,25 @@
 
   // Generar campos para pasajeros adicionales
   document.getElementById('numPasajeros').addEventListener('change', function() {
-    const container = document.getElementById('pasajerosAdicionales');
+    var container = document.getElementById('pasajerosAdicionales');
     container.innerHTML = '';
-    const num = parseInt(this.value);
+    var num = parseInt(this.value);
     
-    for (let i = 2; i <= num; i++) {
-      container.innerHTML += `
-        <div class="passenger-extra" style="margin-top: 20px; padding-top: 15px; border-top: 1px dashed #ddd;">
-          <div class="section-title">Pasajero ${i}</div>
-          <div class="form-group">
-            <label>Nombre completo</label>
-            <input type="text" name="pasajero_${i}_nombre" placeholder="Nombre completo">
-          </div>
-          <div class="form-row-inline">
-            <div class="form-group">
-              <label>Nacionalidad</label>
-              <select name="pasajero_${i}_nacionalidad">
-                <option value="Venezolana">Venezolana</option>
-                <option value="Española">Española</option>
-                <option value="Colombiana">Colombiana</option>
-                <option value="Otra">Otra</option>
-              </select>
-            </div>
-            <div class="form-group">
-              <label>Fecha nacimiento</label>
-              <input type="date" name="pasajero_${i}_nacimiento">
-            </div>
-          </div>
-          <div class="form-row-inline">
-            <div class="form-group">
-              <label>Número pasaporte</label>
-              <input type="text" name="pasajero_${i}_pasaporte" placeholder="A12345678">
-            </div>
-            <div class="form-group">
-              <label>Vencimiento pasaporte</label>
-              <input type="date" name="pasajero_${i}_vencimiento">
-            </div>
-          </div>
-        </div>
-      `;
+    for (var i = 2; i <= num; i++) {
+      container.innerHTML += '<div style="margin-top: 20px; padding-top: 15px; border-top: 1px dashed #ddd;">' +
+        '<div class="section-title">Pasajero ' + i + '</div>' +
+        '<div class="form-group"><label>Nombre completo</label>' +
+        '<input type="text" name="pasajero_' + i + '_nombre" placeholder="Nombre completo"></div>' +
+        '<div class="form-row-inline"><div class="form-group"><label>Nacionalidad</label>' +
+        '<select name="pasajero_' + i + '_nacionalidad"><option value="Venezolana">Venezolana</option>' +
+        '<option value="Española">Española</option><option value="Colombiana">Colombiana</option>' +
+        '<option value="Otra">Otra</option></select></div>' +
+        '<div class="form-group"><label>Fecha nacimiento</label>' +
+        '<input type="date" name="pasajero_' + i + '_nacimiento"></div></div>' +
+        '<div class="form-row-inline"><div class="form-group"><label>Número pasaporte</label>' +
+        '<input type="text" name="pasajero_' + i + '_pasaporte" placeholder="A12345678"></div>' +
+        '<div class="form-group"><label>Vencimiento pasaporte</label>' +
+        '<input type="date" name="pasajero_' + i + '_vencimiento"></div></div></div>';
     }
   });
 
@@ -454,33 +425,32 @@
   document.getElementById('travelForm').addEventListener('submit', function(e) {
     e.preventDefault();
     
-    const formData = new FormData(this);
-    const data = Object.fromEntries(formData.entries());
-    
-    // Agregar timestamp
+    var formData = new FormData(this);
+    var data = {};
+    formData.forEach(function(value, key) { data[key] = value; });
     data.timestamp = new Date().toISOString();
     
-    // Validar que tenga pasaporte
+    // Validar pasaporte
     if (data.tiene_pasaporte === 'NO') {
-      alert('Para viajes internacionales necesitas pasaporte vigente.\n\nSi eres venezolano, tramítalo en el SAIME.\nCuando lo tengas, vuelve a llenar el formulario.');
+      alert('Para viajes internacionales necesitas pasaporte vigente.\n\nSi eres venezolano, tramítalo en el SAIME.');
       return;
     }
 
-    // Validar fecha pasaporte (mínimo 6 meses después del regreso)
-    const vencPasaporte = new Date(data.vencimiento_pasaporte);
-    const fechaRegreso = new Date(data.fecha_regreso);
-    const seisMesesDespues = new Date(fechaRegreso);
+    // Validar vigencia pasaporte
+    var vencPasaporte = new Date(data.vencimiento_pasaporte);
+    var fechaRegreso = new Date(data.fecha_regreso);
+    var seisMesesDespues = new Date(fechaRegreso);
     seisMesesDespues.setMonth(seisMesesDespues.getMonth() + 6);
     
     if (vencPasaporte < seisMesesDespues) {
-      alert('Tu pasaporte debe tener al menos 6 meses de vigencia después de la fecha de regreso.\n\nFecha de regreso: ' + data.fecha_regreso + '\nTu pasaporte vence: ' + data.vencimiento_pasaporte);
+      alert('Tu pasaporte debe tener al menos 6 meses de vigencia después de la fecha de regreso.');
       return;
     }
 
     // Validar mayor de edad
-    const nacimiento = new Date(data.fecha_nacimiento);
-    const hoy = new Date();
-    let edad = hoy.getFullYear() - nacimiento.getFullYear();
+    var nacimiento = new Date(data.fecha_nacimiento);
+    var hoy = new Date();
+    var edad = hoy.getFullYear() - nacimiento.getFullYear();
     if (hoy.getMonth() < nacimiento.getMonth() || 
         (hoy.getMonth() === nacimiento.getMonth() && hoy.getDate() < nacimiento.getDate())) {
       edad--;
@@ -500,23 +470,21 @@
       return;
     }
 
-    // Deshabilitar botón mientras envía
-    const btn = document.getElementById('btnEnviar');
+    var btn = document.getElementById('btnEnviar');
     btn.disabled = true;
     btn.textContent = 'Enviando...';
 
     console.log('Datos a enviar:', data);
 
-    // Enviar a n8n webhook
-    const WEBHOOK_URL = 'https://unstoic-undeservedly-adena.ngrok-free.dev/webhook-test/ava-formulario';
-    fetch(WEBHOOK_URL, {
+    // ENVIAR A N8N
+    fetch('https://unstoic-undeservedly-adena.ngrok-free.dev/webhook-test/ava-formulario', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(data)
     })
-    .then(response => {
+    .then(function(response) {
       if (response.ok) {
-        let mensaje = 'Solicitud enviada correctamente.\n\n';
+        var mensaje = 'Solicitud enviada correctamente.\n\n';
         if (data.canal_respuesta === 'EMAIL') {
           mensaje += 'Recibirás respuesta en tu email: ' + data.email;
         } else if (data.canal_respuesta === 'WHATSAPP') {
@@ -525,17 +493,15 @@
           mensaje += 'Recibirás respuesta en Telegram: @' + data.telegram_username;
         }
         alert(mensaje);
-        // Opcional: resetear formulario
-        // document.getElementById('travelForm').reset();
       } else {
         alert('Error al enviar. Por favor intenta de nuevo.');
       }
     })
-    .catch(error => {
+    .catch(function(error) {
       console.error('Error:', error);
       alert('Error de conexión. Verifica tu internet e intenta de nuevo.');
     })
-    .finally(() => {
+    .finally(function() {
       btn.disabled = false;
       btn.textContent = 'Enviar Solicitud';
     });
