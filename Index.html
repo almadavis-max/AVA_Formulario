@@ -476,7 +476,7 @@
     console.log('Datos a enviar:', data);
     
     // TODO: Reemplazar con tu URL de webhook de n8n
-    // fetch('https://tu-n8n.com/webhook/ava-formulario', {
+    // fetch('WebHook n8n', {
     //   method: 'POST',
     //   headers: { 'Content-Type': 'application/json' },
     //   body: JSON.stringify(data)
@@ -485,6 +485,19 @@
     // .then(result => {
     //   alert('Solicitud enviada. Te contactaremos pronto.');
     // });
+fetch('https://unstoic-undeservedly-adena.ngrok-free.dev/webhook-test/ava-formulario', {
+  method: 'POST',
+  headers: { 'Content-Type': 'application/json' },
+  body: JSON.stringify(data)
+})
+.then(response => response.json())
+.then(result => {
+  alert('Solicitud enviada. Revisaremos tus datos a ver si necesitamos informacion adicional, Espera.');
+})
+.catch(error => {
+  alert('Error al enviar. Intenta de nuevo.');
+});
+    
 
     alert('Solicitud enviada correctamente. Recibirás respuesta por ' + data.canal_respuesta);
   });
