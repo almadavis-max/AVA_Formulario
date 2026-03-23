@@ -485,7 +485,8 @@
     // .then(result => {
     //   alert('Solicitud enviada. Te contactaremos pronto.');
     // });
-fetch('https://unstoic-undeservedly-adena.ngrok-free.dev/webhook-test/ava-formulario', {
+const WEBHOOK_URL = 'https://unstoic-undeservedly-adena.ngrok-free.dev/webhook-test/ava-formulario'
+  fetch(WEBHOOK_URL, {
   method: 'POST',
   headers: { 'Content-Type': 'application/json' },
   body: JSON.stringify(data)
