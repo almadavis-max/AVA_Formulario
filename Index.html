@@ -1,0 +1,494 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AVA - Solicitud de Viaje</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { 
+      font-family: Arial, sans-serif; 
+      background: #f5f5f5; 
+      padding: 20px;
+      line-height: 1.6;
+    }
+    .container { 
+      max-width: 600px; 
+      margin: 0 auto; 
+      background: white; 
+      border-radius: 10px;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+      overflow: hidden;
+    }
+    .header { 
+      background: #1a365d; 
+      color: white; 
+      padding: 20px; 
+      text-align: center; 
+    }
+    .header h1 { font-size: 1.5em; margin-bottom: 5px; }
+    .header p { font-size: 0.9em; opacity: 0.9; }
+    .form-content { padding: 20px; }
+    .section { 
+      margin-bottom: 25px; 
+      padding-bottom: 20px;
+      border-bottom: 1px solid #eee;
+    }
+    .section:last-child { border-bottom: none; }
+    .section-title { 
+      font-weight: bold; 
+      color: #1a365d; 
+      margin-bottom: 15px;
+      font-size: 1.1em;
+    }
+    .form-row { margin-bottom: 15px; }
+    .form-row-inline { 
+      display: flex; 
+      gap: 15px; 
+    }
+    .form-row-inline .form-group { flex: 1; }
+    .form-group { margin-bottom: 15px; }
+    label { 
+      display: block; 
+      margin-bottom: 5px; 
+      font-weight: 500;
+      color: #333;
+      font-size: 0.9em;
+    }
+    input, select { 
+      width: 100%; 
+      padding: 10px 12px; 
+      border: 1px solid #ddd; 
+      border-radius: 5px;
+      font-size: 1em;
+    }
+    input:focus, select:focus { 
+      outline: none; 
+      border-color: #1a365d;
+      box-shadow: 0 0 0 2px rgba(26,54,93,0.1);
+    }
+    .radio-group { 
+      display: flex; 
+      gap: 20px; 
+      margin-top: 5px;
+    }
+    .radio-group label { 
+      display: flex; 
+      align-items: center; 
+      gap: 5px;
+      font-weight: normal;
+      cursor: pointer;
+    }
+    .radio-group input { width: auto; }
+    .btn-submit { 
+      width: 100%; 
+      padding: 15px; 
+      background: #38a169; 
+      color: white; 
+      border: none; 
+      border-radius: 5px;
+      font-size: 1.1em;
+      font-weight: bold;
+      cursor: pointer;
+      margin-top: 10px;
+    }
+    .btn-submit:hover { background: #2f855a; }
+    .btn-add-passenger {
+      background: #e2e8f0;
+      color: #1a365d;
+      border: none;
+      padding: 10px 15px;
+      border-radius: 5px;
+      cursor: pointer;
+      font-size: 0.9em;
+      margin-top: 10px;
+    }
+    .btn-add-passenger:hover { background: #cbd5e0; }
+    .passenger-extra {
+      background: #f7fafc;
+      padding: 15px;
+      border-radius: 5px;
+      margin-top: 15px;
+      border: 1px solid #e2e8f0;
+    }
+    .passenger-extra .section-title {
+      font-size: 1em;
+      margin-bottom: 10px;
+    }
+    .helper-text {
+      font-size: 0.8em;
+      color: #666;
+      margin-top: 3px;
+    }
+    .required { color: #e53e3e; }
+    .hidden { display: none; }
+    .contact-choice {
+      background: #ebf8ff;
+      padding: 15px;
+      border-radius: 5px;
+      margin-bottom: 15px;
+    }
+  </style>
+</head>
+<body>
+
+<div class="container">
+  <div class="header">
+    <h1>AVA - Solicitud de Viaje</h1>
+    <p>Agentryx Consulting</p>
+  </div>
+
+  <form id="travelForm" class="form-content">
+    
+    <!-- TIPO DE VIAJE -->
+    <div class="section">
+      <div class="section-title">Tipo de Viaje</div>
+      <div class="form-group">
+        <div class="radio-group">
+          <label><input type="radio" name="tipo_viaje" value="PERSONAL" required> Personal</label>
+          <label><input type="radio" name="tipo_viaje" value="CORPORATIVO"> Corporativo</label>
+        </div>
+      </div>
+    </div>
+
+    <!-- DATOS DEL VIAJERO PRINCIPAL -->
+    <div class="section">
+      <div class="section-title">Datos del Viajero Principal</div>
+      
+      <div class="form-group">
+        <label>Nombre completo <span class="required">*</span></label>
+        <input type="text" name="nombre_completo" required placeholder="Ej: María López García">
+      </div>
+
+      <div class="form-row-inline">
+        <div class="form-group">
+          <label>Nacionalidad <span class="required">*</span></label>
+          <select name="nacionalidad" required>
+            <option value="">Seleccionar</option>
+            <option value="Venezolana">Venezolana</option>
+            <option value="Española">Española</option>
+            <option value="Colombiana">Colombiana</option>
+            <option value="Otra">Otra</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label>Fecha de nacimiento <span class="required">*</span></label>
+          <input type="date" name="fecha_nacimiento" required>
+        </div>
+      </div>
+
+      <div class="form-row-inline">
+        <div class="form-group">
+          <label>Tipo documento</label>
+          <select name="tipo_documento">
+            <option value="V">Cédula V-</option>
+            <option value="E">Cédula E-</option>
+            <option value="DNI">DNI</option>
+            <option value="NIE">NIE</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label>Número de documento <span class="required">*</span></label>
+          <input type="text" name="numero_documento" required placeholder="Ej: 12345678">
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label>¿Tienes pasaporte vigente? <span class="required">*</span></label>
+        <div class="radio-group">
+          <label><input type="radio" name="tiene_pasaporte" value="SI" required checked> Sí</label>
+          <label><input type="radio" name="tiene_pasaporte" value="NO"> No</label>
+        </div>
+      </div>
+
+      <div id="datosPasaporte">
+      <div class="form-row-inline">
+        <div class="form-group">
+          <label>Número de pasaporte <span class="required">*</span></label>
+          <input type="text" name="numero_pasaporte" required placeholder="Ej: A12345678">
+        </div>
+        <div class="form-group">
+          <label>Vencimiento pasaporte <span class="required">*</span></label>
+          <input type="date" name="vencimiento_pasaporte" required>
+        </div>
+      </div>
+      </div>
+    </div>
+
+    <!-- DATOS DEL VIAJE -->
+    <div class="section">
+      <div class="section-title">Datos del Viaje</div>
+      
+      <div class="form-row-inline">
+        <div class="form-group">
+          <label>Ciudad origen <span class="required">*</span></label>
+          <input type="text" name="origen" required placeholder="Ej: Caracas">
+        </div>
+        <div class="form-group">
+          <label>Ciudad destino <span class="required">*</span></label>
+          <input type="text" name="destino" required placeholder="Ej: Madrid">
+        </div>
+      </div>
+
+      <div class="form-row-inline">
+        <div class="form-group">
+          <label>Fecha de ida <span class="required">*</span></label>
+          <input type="date" name="fecha_ida" required>
+        </div>
+        <div class="form-group">
+          <label>Fecha de regreso <span class="required">*</span></label>
+          <input type="date" name="fecha_regreso" required>
+        </div>
+      </div>
+
+      <div class="form-row-inline">
+        <div class="form-group">
+          <label>Número de pasajeros</label>
+          <select name="numero_pasajeros" id="numPasajeros">
+            <option value="1">1</option>
+            <option value="2">2</option>
+            <option value="3">3</option>
+            <option value="4">4</option>
+            <option value="5">5</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label>Clase de vuelo</label>
+          <select name="clase_vuelo">
+            <option value="TURISTA">Turista</option>
+            <option value="PREMIUM">Premium</option>
+            <option value="BUSINESS">Business</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label>Tipo de boleto</label>
+        <select name="tipo_boleto">
+          <option value="FLEXIBLE">Flexible (cambios sin costo)</option>
+          <option value="SEMI_FLEXIBLE">Semi-flexible (cambios con costo)</option>
+          <option value="SIN_CAMBIO">Sin cambio (más económico)</option>
+        </select>
+      </div>
+
+      <!-- Pasajeros adicionales (se muestran dinámicamente) -->
+      <div id="pasajerosAdicionales"></div>
+    </div>
+
+    <!-- PRESUPUESTO (solo personal) -->
+    <div class="section" id="seccionPresupuesto">
+      <div class="section-title">Presupuesto (viaje personal)</div>
+      <div class="form-group">
+        <label>Presupuesto máximo para el vuelo (USD)</label>
+        <input type="number" name="presupuesto_max" placeholder="Ej: 800">
+      </div>
+    </div>
+
+    <!-- SEGURO -->
+    <div class="section">
+      <div class="section-title">Seguro de Viaje</div>
+      <div class="form-group">
+        <label>¿Tienes seguro de viaje internacional activo?</label>
+        <div class="radio-group">
+          <label><input type="radio" name="tiene_seguro" value="SI"> Sí</label>
+          <label><input type="radio" name="tiene_seguro" value="NO" checked> No</label>
+        </div>
+        <p class="helper-text">El seguro es obligatorio para viajes internacionales. Te enviaremos opciones si no tienes.</p>
+      </div>
+    </div>
+
+    <!-- CONTACTO -->
+    <div class="section">
+      <div class="section-title">Datos de Contacto</div>
+      <p class="helper-text" style="margin-bottom: 15px;">Te enviaremos el resultado de tu solicitud por el canal que prefieras.</p>
+      
+      <div class="form-group">
+        <label>Email <span class="required">*</span></label>
+        <input type="email" name="email" required placeholder="tu@email.com">
+      </div>
+
+      <div class="form-group">
+        <label>Teléfono con código de país <span class="required">*</span></label>
+        <input type="tel" name="telefono" required placeholder="Ej: +58 412 1234567">
+      </div>
+
+      <div class="contact-choice">
+        <label>¿Por dónde prefieres recibir respuesta?</label>
+        <div class="radio-group" style="margin-top: 10px;">
+          <label><input type="radio" name="canal_respuesta" value="EMAIL" checked> Email</label>
+          <label><input type="radio" name="canal_respuesta" value="WHATSAPP"> WhatsApp</label>
+          <label><input type="radio" name="canal_respuesta" value="TELEGRAM"> Telegram</label>
+        </div>
+      </div>
+
+      <div class="form-group" id="telegramUsername" style="display:none;">
+        <label>Usuario de Telegram (sin @)</label>
+        <input type="text" name="telegram_username" placeholder="Ej: juanperez">
+      </div>
+    </div>
+
+    <!-- DATOS CORPORATIVOS (solo si es corporativo) -->
+    <div class="section hidden" id="seccionCorporativo">
+      <div class="section-title">Datos Corporativos</div>
+      
+      <div class="form-group">
+        <label>Nombre de la empresa</label>
+        <input type="text" name="nombre_empresa" value="Agentryx Consulting">
+      </div>
+
+      <div class="form-group">
+        <label>RIF/NIF de la empresa</label>
+        <input type="text" name="rif_empresa" value="J-123456789">
+      </div>
+
+      <div class="form-group">
+        <label>Email del supervisor</label>
+        <input type="email" name="email_supervisor" value="supervisor@agentryx.com">
+      </div>
+    </div>
+
+    <button type="submit" class="btn-submit">Enviar Solicitud</button>
+
+  </form>
+</div>
+
+<script>
+  // Mostrar/ocultar campos pasaporte
+  document.querySelectorAll('input[name="tiene_pasaporte"]').forEach(radio => {
+    radio.addEventListener('change', function() {
+      const datosPasaporte = document.getElementById('datosPasaporte');
+      const inputs = datosPasaporte.querySelectorAll('input');
+      if (this.value === 'NO') {
+        datosPasaporte.style.display = 'none';
+        inputs.forEach(i => i.removeAttribute('required'));
+      } else {
+        datosPasaporte.style.display = 'block';
+        inputs.forEach(i => i.setAttribute('required', 'required'));
+      }
+    });
+  });
+
+  // Mostrar/ocultar sección corporativo
+  document.querySelectorAll('input[name="tipo_viaje"]').forEach(radio => {
+    radio.addEventListener('change', function() {
+      const secCorp = document.getElementById('seccionCorporativo');
+      const secPresup = document.getElementById('seccionPresupuesto');
+      if (this.value === 'CORPORATIVO') {
+        secCorp.classList.remove('hidden');
+        secPresup.classList.add('hidden');
+      } else {
+        secCorp.classList.add('hidden');
+        secPresup.classList.remove('hidden');
+      }
+    });
+  });
+
+  // Mostrar campo Telegram si elige Telegram
+  document.querySelectorAll('input[name="canal_respuesta"]').forEach(radio => {
+    radio.addEventListener('change', function() {
+      const telField = document.getElementById('telegramUsername');
+      telField.style.display = this.value === 'TELEGRAM' ? 'block' : 'none';
+    });
+  });
+
+  // Generar campos para pasajeros adicionales
+  document.getElementById('numPasajeros').addEventListener('change', function() {
+    const container = document.getElementById('pasajerosAdicionales');
+    container.innerHTML = '';
+    const num = parseInt(this.value);
+    
+    for (let i = 2; i <= num; i++) {
+      container.innerHTML += `
+        <div class="passenger-extra">
+          <div class="section-title">Pasajero ${i}</div>
+          <div class="form-group">
+            <label>Nombre completo</label>
+            <input type="text" name="pasajero_${i}_nombre" placeholder="Nombre completo">
+          </div>
+          <div class="form-row-inline">
+            <div class="form-group">
+              <label>Nacionalidad</label>
+              <select name="pasajero_${i}_nacionalidad">
+                <option value="Venezolana">Venezolana</option>
+                <option value="Española">Española</option>
+                <option value="Colombiana">Colombiana</option>
+                <option value="Otra">Otra</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label>Fecha nacimiento</label>
+              <input type="date" name="pasajero_${i}_nacimiento">
+            </div>
+          </div>
+          <div class="form-row-inline">
+            <div class="form-group">
+              <label>Número pasaporte</label>
+              <input type="text" name="pasajero_${i}_pasaporte" placeholder="A12345678">
+            </div>
+            <div class="form-group">
+              <label>Vencimiento pasaporte</label>
+              <input type="date" name="pasajero_${i}_vencimiento">
+            </div>
+          </div>
+        </div>
+      `;
+    }
+  });
+
+  // Enviar formulario
+  document.getElementById('travelForm').addEventListener('submit', function(e) {
+    e.preventDefault();
+    
+    const formData = new FormData(this);
+    const data = Object.fromEntries(formData.entries());
+    
+    // Validar que tenga pasaporte
+    if (data.tiene_pasaporte === 'NO') {
+      alert('Para viajes internacionales necesitas pasaporte vigente.\n\nSi eres venezolano, tramítalo en el SAIME.\nCuando lo tengas, vuelve a llenar el formulario.');
+      return;
+    }
+
+    // Validar fecha pasaporte (mínimo 6 meses después del regreso)
+    const vencPasaporte = new Date(data.vencimiento_pasaporte);
+    const fechaRegreso = new Date(data.fecha_regreso);
+    const seiseMesesDespues = new Date(fechaRegreso);
+    seiseMesesDespues.setMonth(seiseMesesDespues.getMonth() + 6);
+    
+    if (vencPasaporte < seiseMesesDespues) {
+      alert('Tu pasaporte debe tener al menos 6 meses de vigencia después de la fecha de regreso.');
+      return;
+    }
+
+    // Validar mayor de edad
+    const nacimiento = new Date(data.fecha_nacimiento);
+    const hoy = new Date();
+    let edad = hoy.getFullYear() - nacimiento.getFullYear();
+    if (hoy.getMonth() < nacimiento.getMonth() || 
+        (hoy.getMonth() === nacimiento.getMonth() && hoy.getDate() < nacimiento.getDate())) {
+      edad--;
+    }
+    if (edad < 18) {
+      alert('Debes ser mayor de 18 años para usar este servicio.');
+      return;
+    }
+
+    // Aquí enviar a n8n webhook
+    console.log('Datos a enviar:', data);
+    
+    // TODO: Reemplazar con tu URL de webhook de n8n
+    // fetch('https://tu-n8n.com/webhook/ava-formulario', {
+    //   method: 'POST',
+    //   headers: { 'Content-Type': 'application/json' },
+    //   body: JSON.stringify(data)
+    // })
+    // .then(response => response.json())
+    // .then(result => {
+    //   alert('Solicitud enviada. Te contactaremos pronto.');
+    // });
+
+    alert('Solicitud enviada correctamente. Recibirás respuesta por ' + data.canal_respuesta);
+  });
+</script>
+
+</body>
+</html>
